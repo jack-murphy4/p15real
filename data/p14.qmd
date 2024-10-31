@@ -1,0 +1,120 @@
+---
+title: "p14"
+author: "Jack Murphy"
+format: html
+---
+
+p14
+
+## 9.3.1: 
+
+## 1. 
+
+To draw a line chart, you would use geom_line( ).
+
+To draw a box plot, you would use geom_boxplot( ).
+
+For a histogram, use geom_histogram( ).
+
+For an area chart, use geom_area( ).
+
+## 2.
+
+In this case, show.legend = FALSE removes the legend for the colors of drv. If this argument is removed, the legend will appear.
+
+## 3. 
+
+```{r}
+library(tidyverse)
+mpg
+
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point() +
+  geom_smooth(se = FALSE)
+
+```
+
+The se argument shows the standard error of the smoothed line in a shaded region around the line.
+
+## 4. 
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(color = "black") +
+  geom_smooth(se = FALSE, color = "black")
+
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(color = "black") +
+  geom_smooth(aes(color = "black"), se = FALSE)
+
+
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(color = drv)) +
+  geom_smooth(aes(color = drv), se = FALSE)
+
+
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(color = drv)) +
+  geom_smooth(se = FALSE, color = "black")
+
+
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(color = drv)) +
+  geom_smooth(aes(color = drv, linetype = drv), se = FALSE)
+
+
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(color = drv), size = 3, shape = 21, fill = "white") +
+  geom_smooth(aes(color = drv), se = FALSE)
+
+```
+
+## 9.5.1 
+
+## 1.
+
+```{r}
+ggplot(diamonds) + 
+  stat_summary(
+    aes(x = cut, y = depth),
+    fun.min = min,
+    fun.max = max,
+    fun = median
+  )
+```
+
+The default geom for the stat_summary function is geom_pointrange . To rewrite this function using that geom, you would use something like the code below.
+
+```{r}
+ggplot(diamonds, aes(x = cut, y = depth)) +
+  geom_pointrange(
+    stat = "summary",
+    fun.min = min,
+    fun.max = max,
+    fun = median
+  )
+```
+
+## 2. 
+
+geom_bar( ) and geom_col( ) determine the heights of the bars in a bar chart. geom_col( ) sets the y value as the height and geom_bar( ) sets the x value as the height.
+
+## 3. 
+
+## 4. 
+
+stat_smooth() computes the y value, the confidence interval through y min and y max, and the standard error.
+
+## 5. 
+
+```{r}
+ggplot(diamonds, aes(x = cut, y = after_stat(prop))) + 
+  geom_bar()
+```
+
+```{r}
+ggplot(diamonds, aes(x = cut, y = after_stat(prop), group = 1)) + 
+  geom_bar()
+```
+
+As visible between the two plots, without group = 1, the cut variables are all seperated into different groups and thus will all have a 1.00 proportions because they are all the same.
